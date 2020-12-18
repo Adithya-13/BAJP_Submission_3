@@ -36,7 +36,7 @@ class RemoteDataSource {
             ) {
                 val results = response.body()?.results
                 if (results != null) {
-                    resultMovies.value = ApiResponse.success(results)
+                    resultMovies.postValue(ApiResponse.success(results))
                 }
                 EspressoIdlingResource.decrement()
             }
@@ -59,7 +59,7 @@ class RemoteDataSource {
             ) {
                 val results = response.body()?.results
                 if (results != null) {
-                    resultTvShows.value = ApiResponse.success(results)
+                    resultTvShows.postValue(ApiResponse.success(results))
                 }
                 EspressoIdlingResource.decrement()
             }
