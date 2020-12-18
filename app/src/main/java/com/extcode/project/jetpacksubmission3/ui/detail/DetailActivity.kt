@@ -88,7 +88,7 @@ class DetailActivity : AppCompatActivity() {
             Status.ERROR -> {
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(
-                    applicationContext,
+                    this,
                     "Terjadi kesalahan",
                     Toast.LENGTH_SHORT
                 ).show()
