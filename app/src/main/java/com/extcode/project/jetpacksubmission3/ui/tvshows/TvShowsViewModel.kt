@@ -9,6 +9,7 @@ import com.extcode.project.jetpacksubmission3.vo.Resource
 
 class TvShowsViewModel(private val movieAppRepository: MovieAppRepository) : ViewModel() {
 
-    fun getTvShows(): LiveData<Resource<PagedList<MovieEntity>>> = movieAppRepository.getAllTvShows()
+    fun getTvShows(sort: String): LiveData<Resource<PagedList<MovieEntity>>> =
+        movieAppRepository.getAllTvShows(sort)
 
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.extcode.project.jetpacksubmission3.data.MovieAppRepository
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 import com.extcode.project.jetpacksubmission3.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -22,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class TvShowsViewModelTest {
 
     private lateinit var tvShowsViewModel: TvShowsViewModel
+    private val sort = SortUtils.RANDOM
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -47,13 +49,13 @@ class TvShowsViewModelTest {
         val tvShows = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         tvShows.value = dummyTvShows
 
-        `when`(movieAppRepository.getAllTvShows()).thenReturn(tvShows)
-        val tvShowEntities = tvShowsViewModel.getTvShows().value?.data
-        verify(movieAppRepository).getAllTvShows()
+        `when`(movieAppRepository.getAllTvShows(sort)).thenReturn(tvShows)
+        val tvShowEntities = tvShowsViewModel.getTvShows(sort).value?.data
+        verify(movieAppRepository).getAllTvShows(sort)
         assertNotNull(tvShowEntities)
         assertEquals(5, tvShowEntities?.size)
 
-        tvShowsViewModel.getTvShows().observeForever(observer)
+        tvShowsViewModel.getTvShows(sort).observeForever(observer)
         verify(observer).onChanged(dummyTvShows)
     }
 }

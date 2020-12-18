@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.extcode.project.jetpacksubmission3.data.MovieAppRepository
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 import com.extcode.project.jetpacksubmission3.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -22,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class MoviesViewModelTest {
 
     private lateinit var moviesViewModel: MoviesViewModel
+    private val sort = SortUtils.RANDOM
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -47,13 +49,13 @@ class MoviesViewModelTest {
         val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
-        `when`(movieAppRepository.getAllMovies()).thenReturn(movies)
-        val movieEntities = moviesViewModel.getMovies().value?.data
-        verify(movieAppRepository).getAllMovies()
+        `when`(movieAppRepository.getAllMovies(sort)).thenReturn(movies)
+        val movieEntities = moviesViewModel.getMovies(sort).value?.data
+        verify(movieAppRepository).getAllMovies(sort)
         assertNotNull(movieEntities)
         assertEquals(5, movieEntities?.size)
 
-        moviesViewModel.getMovies().observeForever(observer)
+        moviesViewModel.getMovies(sort).observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
 }

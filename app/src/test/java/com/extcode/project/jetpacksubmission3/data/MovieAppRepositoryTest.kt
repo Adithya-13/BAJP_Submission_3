@@ -6,10 +6,7 @@ import androidx.paging.DataSource
 import com.extcode.project.jetpacksubmission3.data.source.local.LocalDataSource
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
 import com.extcode.project.jetpacksubmission3.data.source.remote.RemoteDataSource
-import com.extcode.project.jetpacksubmission3.utils.AppExecutors
-import com.extcode.project.jetpacksubmission3.utils.DataDummy
-import com.extcode.project.jetpacksubmission3.utils.LiveDataTestUtil
-import com.extcode.project.jetpacksubmission3.utils.PagedListUtil
+import com.extcode.project.jetpacksubmission3.utils.*
 import com.extcode.project.jetpacksubmission3.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
@@ -35,16 +32,18 @@ class MovieAppRepositoryTest {
     private val tvShowResponses = DataDummy.generateRemoteDummyTvShows()
     private val tvShowId = tvShowResponses[0].id
 
+    private val random = SortUtils.RANDOM
+
     @Test
     fun getAllMovies() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllMovies()).thenReturn(dataSourceFactory)
-        movieAppRepository.getAllMovies()
+        `when`(local.getAllMovies(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getAllMovies(random)
 
         val movieEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyMovies()))
-        verify(local).getAllMovies()
+        verify(local).getAllMovies(random)
         assertNotNull(movieEntities.data)
         assertEquals(movieResponses.size.toLong(), movieEntities.data?.size?.toLong())
     }
@@ -53,12 +52,12 @@ class MovieAppRepositoryTest {
     fun getAllTvShows() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllTvShows()).thenReturn(dataSourceFactory)
-        movieAppRepository.getAllTvShows()
+        `when`(local.getAllTvShows(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getAllTvShows(random)
 
         val tvShowEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyTvShows()))
-        verify(local).getAllTvShows()
+        verify(local).getAllTvShows(random)
         assertNotNull(tvShowEntities.data)
         assertEquals(tvShowResponses.size.toLong(), tvShowEntities.data?.size?.toLong())
     }
@@ -126,12 +125,12 @@ class MovieAppRepositoryTest {
     fun getBookmarkedMovies() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllBookmarkedMovies()).thenReturn(dataSourceFactory)
-        movieAppRepository.getBookmarkedMovies()
+        `when`(local.getAllBookmarkedMovies(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getBookmarkedMovies(random)
 
         val bookmarkedMovieEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyMovies()))
-        verify(local).getAllBookmarkedMovies()
+        verify(local).getAllBookmarkedMovies(random)
         assertNotNull(bookmarkedMovieEntities)
         assertEquals(movieResponses.size.toLong(), bookmarkedMovieEntities.data?.size?.toLong())
     }
@@ -140,12 +139,12 @@ class MovieAppRepositoryTest {
     fun getBookmarkedTvShows() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllBookmarkedTvShows()).thenReturn(dataSourceFactory)
-        movieAppRepository.getBookmarkedTvShows()
+        `when`(local.getAllBookmarkedTvShows(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getBookmarkedTvShows(random)
 
         val bookmarkedTvShowEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyTvShows()))
-        verify(local).getAllBookmarkedTvShows()
+        verify(local).getAllBookmarkedTvShows(random)
         assertNotNull(bookmarkedTvShowEntities)
         assertEquals(tvShowResponses.size.toLong(), bookmarkedTvShowEntities.data?.size?.toLong())
     }

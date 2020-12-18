@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.extcode.project.jetpacksubmission3.R
+import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
 import com.extcode.project.jetpacksubmission3.databinding.FragmentFavoriteTvShowsBinding
 import com.extcode.project.jetpacksubmission3.ui.favorite.FavoriteViewModel
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 import com.extcode.project.jetpacksubmission3.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -44,23 +48,17 @@ class FavoriteTvShowsFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         binding.notFound.visibility = View.GONE
-        viewModel.getBookmarkedTvShows().observe(this, { tvShows ->
-            if (tvShows.isNotEmpty()) {
-                binding.progressBar.visibility = View.GONE
-                binding.notFound.visibility = View.GONE
-                tvShowsAdapter.submitList(tvShows)
-                tvShowsAdapter.notifyDataSetChanged()
-            } else {
-                binding.progressBar.visibility = View.GONE
-                binding.notFound.visibility = View.VISIBLE
-            }
-        })
+        setList(SortUtils.RANDOM)
 
         with(binding.rvBookmarkTvShows) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = tvShowsAdapter
         }
+
+        binding.random.setOnClickListener { setList(SortUtils.RANDOM) }
+        binding.newest.setOnClickListener { setList(SortUtils.NEWEST) }
+        binding.popularity.setOnClickListener { setList(SortUtils.POPULARITY) }
     }
 
 
@@ -94,6 +92,22 @@ class FavoriteTvShowsFragment : Fragment() {
             }
         }
     })
+
+    private fun setList(sort: String) {
+        viewModel.getBookmarkedTvShows(sort).observe(this, tvShowsObserver)
+    }
+
+    private val tvShowsObserver = Observer<PagedList<MovieEntity>> { tvShows ->
+        if (tvShows.isNotEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            binding.notFound.visibility = View.GONE
+            tvShowsAdapter.submitList(tvShows)
+            tvShowsAdapter.notifyDataSetChanged()
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.notFound.visibility = View.VISIBLE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

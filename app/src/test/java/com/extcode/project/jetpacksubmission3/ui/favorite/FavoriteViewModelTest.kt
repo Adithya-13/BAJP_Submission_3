@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.extcode.project.jetpacksubmission3.data.MovieAppRepository
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -20,6 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class FavoriteViewModelTest {
     private lateinit var viewModel: FavoriteViewModel
+    private val sort = SortUtils.RANDOM
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -45,13 +47,13 @@ class FavoriteViewModelTest {
         val movies = MutableLiveData<PagedList<MovieEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieAppRepository.getBookmarkedMovies()).thenReturn(movies)
-        val movieEntities = viewModel.getBookmarkedMovies().value
-        verify(movieAppRepository).getBookmarkedMovies()
+        `when`(movieAppRepository.getBookmarkedMovies(sort)).thenReturn(movies)
+        val movieEntities = viewModel.getBookmarkedMovies(sort).value
+        verify(movieAppRepository).getBookmarkedMovies(sort)
         assertNotNull(movieEntities)
         assertEquals(5, movieEntities?.size)
 
-        viewModel.getBookmarkedMovies().observeForever(observer)
+        viewModel.getBookmarkedMovies(sort).observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
 
@@ -62,13 +64,13 @@ class FavoriteViewModelTest {
         val tvShows = MutableLiveData<PagedList<MovieEntity>>()
         tvShows.value = dummyTvShows
 
-        `when`(movieAppRepository.getBookmarkedTvShows()).thenReturn(tvShows)
-        val tvShowEntities = viewModel.getBookmarkedTvShows().value
-        verify(movieAppRepository).getBookmarkedTvShows()
+        `when`(movieAppRepository.getBookmarkedTvShows(sort)).thenReturn(tvShows)
+        val tvShowEntities = viewModel.getBookmarkedTvShows(sort).value
+        verify(movieAppRepository).getBookmarkedTvShows(sort)
         assertNotNull(tvShowEntities)
         assertEquals(5, tvShowEntities?.size)
 
-        viewModel.getBookmarkedTvShows().observeForever(observer)
+        viewModel.getBookmarkedTvShows(sort).observeForever(observer)
         verify(observer).onChanged(dummyTvShows)
     }
 

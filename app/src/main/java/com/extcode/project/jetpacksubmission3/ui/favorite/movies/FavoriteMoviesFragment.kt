@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.extcode.project.jetpacksubmission3.R
+import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
 import com.extcode.project.jetpacksubmission3.databinding.FragmentFavoriteMoviesBinding
 import com.extcode.project.jetpacksubmission3.ui.favorite.FavoriteViewModel
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 import com.extcode.project.jetpacksubmission3.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -44,25 +48,18 @@ class FavoriteMoviesFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         binding.notFound.visibility = View.GONE
-        viewModel.getBookmarkedMovies().observe(this, { movies ->
-            if (movies.isNotEmpty()) {
-                binding.progressBar.visibility = View.GONE
-                binding.notFound.visibility = View.GONE
-                moviesAdapter.submitList(movies)
-                moviesAdapter.notifyDataSetChanged()
-            } else {
-                binding.progressBar.visibility = View.GONE
-                binding.notFound.visibility = View.VISIBLE
-            }
-        })
+        setList(SortUtils.RANDOM)
 
         with(binding.rvBookmarkMovies) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             this.adapter = moviesAdapter
         }
-    }
 
+        binding.random.setOnClickListener { setList(SortUtils.RANDOM) }
+        binding.newest.setOnClickListener { setList(SortUtils.NEWEST) }
+        binding.popularity.setOnClickListener { setList(SortUtils.POPULARITY) }
+    }
 
     private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
         override fun getMovementFlags(
@@ -94,6 +91,22 @@ class FavoriteMoviesFragment : Fragment() {
             }
         }
     })
+
+    private fun setList(sort: String) {
+        viewModel.getBookmarkedMovies(sort).observe(this, moviesObserver)
+    }
+
+    private val moviesObserver = Observer<PagedList<MovieEntity>> { movies ->
+        if (movies.isNotEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            binding.notFound.visibility = View.GONE
+            moviesAdapter.submitList(movies)
+            moviesAdapter.notifyDataSetChanged()
+        } else {
+            binding.progressBar.visibility = View.GONE
+            binding.notFound.visibility = View.VISIBLE
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

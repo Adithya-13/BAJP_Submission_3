@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
 import com.extcode.project.jetpacksubmission3.data.source.local.room.MovieDao
+import com.extcode.project.jetpacksubmission3.utils.SortUtils
 
 class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
 
@@ -14,15 +15,28 @@ class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
             INSTANCE ?: LocalDataSource(movieDao)
     }
 
-    fun getAllMovies(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getMovies()
-    fun getAllTvShows(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getTvShows()
+    fun getAllMovies(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryMovies(sort)
+        return mMovieDao.getMovies(query)
+    }
+
+    fun getAllTvShows(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryTvShows(sort)
+        return mMovieDao.getTvShows(query)
+    }
+
     fun getMovie(movieId: Int): LiveData<MovieEntity> = mMovieDao.getMovie(movieId)
     fun getTvShow(tvShowId: Int): LiveData<MovieEntity> = mMovieDao.getTvShow(tvShowId)
-    fun getAllBookmarkedMovies(): DataSource.Factory<Int, MovieEntity> =
-        mMovieDao.getBookmarkedMovies()
 
-    fun getAllBookmarkedTvShows(): DataSource.Factory<Int, MovieEntity> =
-        mMovieDao.getBookmarkedTvShows()
+    fun getAllBookmarkedMovies(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryBookmarkedMovies(sort)
+        return mMovieDao.getBookmarkedMovies(query)
+    }
+
+    fun getAllBookmarkedTvShows(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryBookmarkedTvShows(sort)
+        return mMovieDao.getBookmarkedTvShows(query)
+    }
 
     fun insertMovies(movies: List<MovieEntity>) = mMovieDao.insertMovie(movies)
     fun updateMovie(movie: MovieEntity) = mMovieDao.updateMovie(movie)

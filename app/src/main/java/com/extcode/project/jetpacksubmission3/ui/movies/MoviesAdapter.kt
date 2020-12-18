@@ -18,8 +18,6 @@ import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEnt
 import com.extcode.project.jetpacksubmission3.databinding.ItemCardListBinding
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailActivity
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailType
-import com.extcode.project.jetpacksubmission3.ui.favorite.movies.FavoriteMoviesAdapter
-import java.util.*
 
 class MoviesAdapter : PagedListAdapter<MovieEntity, MoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
