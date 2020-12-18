@@ -3,10 +3,10 @@ package com.extcode.project.jetpacksubmission3.ui.tvshows
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.extcode.project.jetpacksubmission3.data.source.MovieAppRepository
+import androidx.paging.PagedList
+import com.extcode.project.jetpacksubmission3.data.MovieAppRepository
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
-import com.extcode.project.jetpacksubmission3.ui.tvshows.TvShowsViewModel
-import com.extcode.project.jetpacksubmission3.utils.DataDummy
+import com.extcode.project.jetpacksubmission3.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -30,7 +30,10 @@ class TvShowsViewModelTest {
     private lateinit var movieAppRepository: MovieAppRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -39,15 +42,16 @@ class TvShowsViewModelTest {
 
     @Test
     fun getTvShows() {
-        val dummyTvShows = DataDummy.generateDummyTvShows()
-        val tvShows = MutableLiveData<List<MovieEntity>>()
+        val dummyTvShows = Resource.success(pagedList)
+        `when`(dummyTvShows.data?.size).thenReturn(5)
+        val tvShows = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         tvShows.value = dummyTvShows
 
         `when`(movieAppRepository.getAllTvShows()).thenReturn(tvShows)
-        val tvShowEntities = tvShowsViewModel.getTvShows().value
+        val tvShowEntities = tvShowsViewModel.getTvShows().value?.data
         verify(movieAppRepository).getAllTvShows()
         assertNotNull(tvShowEntities)
-        assertEquals(3, tvShowEntities?.size)
+        assertEquals(5, tvShowEntities?.size)
 
         tvShowsViewModel.getTvShows().observeForever(observer)
         verify(observer).onChanged(dummyTvShows)

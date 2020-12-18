@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -16,17 +18,20 @@ import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEnt
 import com.extcode.project.jetpacksubmission3.databinding.ItemCardListBinding
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailActivity
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailType
-import com.skydoves.transformationlayout.TransformationCompat
-import java.util.*
 
-class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() {
-    private var listTvShows = ArrayList<MovieEntity>()
+class TvShowsAdapter :
+    PagedListAdapter<MovieEntity, TvShowsAdapter.TvShowsViewHolder>(DIFF_CALLBACK) {
 
-    fun setTvShows(tvShows: List<MovieEntity>?) {
-        if (tvShows == null) return
-        this.listTvShows.clear()
-        this.listTvShows.addAll(tvShows)
-        this.notifyDataSetChanged()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowsViewHolder {
@@ -35,11 +40,12 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
         return TvShowsViewHolder(itemCardListBinding)
     }
 
-    override fun onBindViewHolder(holderTvShows: TvShowsViewHolder, position: Int) {
-        holderTvShows.bind(listTvShows[position])
+    override fun onBindViewHolder(holder: TvShowsAdapter.TvShowsViewHolder, position: Int) {
+        val tvShowEntity = getItem(position)
+        if (tvShowEntity != null) {
+            holder.bind(tvShowEntity)
+        }
     }
-
-    override fun getItemCount(): Int = listTvShows.size
 
     inner class TvShowsViewHolder(private val binding: ItemCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -47,11 +53,11 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
             with(binding) {
                 title.text = movieEntity.title
                 date.text = movieEntity.releaseDate
-                date.text = itemView.context.getString(
+                language.text = movieEntity.originalLanguage
+                popularity.text = itemView.context.getString(
                     R.string.popularity_d,
                     movieEntity.popularity.toString()
                 )
-                popularity.text = movieEntity.originalLanguage
                 userScore.text = movieEntity.voteAverage.toString()
                 Glide.with(itemView.context)
                     .load(
@@ -89,7 +95,7 @@ class TvShowsAdapter : RecyclerView.Adapter<TvShowsAdapter.TvShowsViewHolder>() 
                         putExtra(DetailActivity.EXTRA_TYPE, DetailType.TV_SHOW.ordinal)
                         putExtra(DetailActivity.EXTRA_ID, movieEntity.id)
                     }
-                    TransformationCompat.startActivity(transformationLayout, intent)
+                    itemView.context.startActivity(intent)
                 }
             }
         }

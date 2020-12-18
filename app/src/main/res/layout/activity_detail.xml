@@ -36,6 +36,7 @@
                         android:layout_height="350dp"
                         android:contentDescription="@string/postertopbar"
                         android:scaleType="centerCrop"
+                        android:background="@drawable/poster_placeholder"
                         android:src="@drawable/poster_crimes" />
 
                     <ImageView
@@ -125,12 +126,14 @@
                 android:contentDescription="@string/subPoster"
                 android:elevation="10dp"
                 android:src="@drawable/poster_crimes"
+                android:background="@drawable/poster_placeholder"
                 app:layout_constraintBottom_toBottomOf="@+id/topBarCardView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topBarCardView"
                 app:riv_corner_radius="10dp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/favoriteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

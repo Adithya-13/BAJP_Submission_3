@@ -1,4 +1,4 @@
-package com.extcode.project.jetpacksubmission3.ui.movies
+package com.extcode.project.jetpacksubmission3.ui.favorite.movies
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -18,10 +18,9 @@ import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEnt
 import com.extcode.project.jetpacksubmission3.databinding.ItemCardListBinding
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailActivity
 import com.extcode.project.jetpacksubmission3.ui.detail.DetailType
-import com.extcode.project.jetpacksubmission3.ui.favorite.movies.FavoriteMoviesAdapter
-import java.util.*
 
-class MoviesAdapter : PagedListAdapter<MovieEntity, MoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+class FavoriteMoviesAdapter :
+    PagedListAdapter<MovieEntity, FavoriteMoviesAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
@@ -41,12 +40,14 @@ class MoviesAdapter : PagedListAdapter<MovieEntity, MoviesAdapter.MovieViewHolde
         return MovieViewHolder(itemCardListBinding)
     }
 
-    override fun onBindViewHolder(holder: MoviesAdapter.MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movieEntity = getItem(position)
         if (movieEntity != null) {
             holder.bind(movieEntity)
         }
     }
+
+    fun getSwipedData(swipedPosition: Int): MovieEntity? = getItem(swipedPosition)
 
     inner class MovieViewHolder(private val binding: ItemCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {

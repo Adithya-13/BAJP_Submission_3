@@ -2,19 +2,20 @@ package com.extcode.project.jetpacksubmission3.ui.detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.extcode.project.jetpacksubmission3.R
 import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEntity
 import com.extcode.project.jetpacksubmission3.databinding.ActivityDetailBinding
 import com.extcode.project.jetpacksubmission3.viewmodel.ViewModelFactory
-import com.skydoves.transformationlayout.TransformationAppCompatActivity
-import com.skydoves.transformationlayout.TransformationCompat.onTransformationStartContainer
-import com.skydoves.transformationlayout.onTransformationStartContainer
+import com.extcode.project.jetpacksubmission3.vo.Resource
+import com.extcode.project.jetpacksubmission3.vo.Status
 
-class DetailActivity : TransformationAppCompatActivity() {
+class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_TYPE = "extraType"
@@ -22,9 +23,9 @@ class DetailActivity : TransformationAppCompatActivity() {
     }
 
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var viewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onTransformationStartContainer()
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -34,34 +35,84 @@ class DetailActivity : TransformationAppCompatActivity() {
 
         val id = intent.getIntExtra(EXTRA_ID, -1)
 
-        val factory = ViewModelFactory.getInstance()
-        val viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
+        val factory = ViewModelFactory.getInstance(this)
+        viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
         binding.progressBar.visibility = View.VISIBLE
         binding.nestedScrollView.visibility = View.GONE
         when (enumType) {
             DetailType.MOVIE -> {
-                viewModel.selectedMovieId(id.toString())
-                viewModel.getMovieDetail().observe(this, { movie ->
-                    binding.progressBar.visibility = View.GONE
-                    binding.nestedScrollView.visibility = View.VISIBLE
-                    populateDetail(movie)
+                viewModel.selectedMovieId(id)
+                viewModel.movieDetail.observe(this, { movie ->
+                    if (movie != null) {
+                        showDetail(movie)
+                    }
                 })
             }
             DetailType.TV_SHOW -> {
-                viewModel.selectedTvShowId(id.toString())
-                viewModel.getTvShowDetail().observe(this, { tvShow ->
-                    binding.progressBar.visibility = View.GONE
-                    binding.nestedScrollView.visibility = View.VISIBLE
-                    populateDetail(tvShow)
+                viewModel.selectedTvShowId(id)
+                viewModel.tvShowDetail.observe(this, { tvShow ->
+                    if (tvShow != null) {
+                        showDetail(tvShow)
+                    }
                 })
             }
         }
 
         binding.backButton.setOnClickListener { onBackPressed() }
         binding.share.setOnClickListener { share() }
+        binding.favoriteButton.setOnClickListener {
+            when (enumType) {
+                DetailType.MOVIE -> {
+                    viewModel.setBookmarkMovie()
+                }
+                DetailType.TV_SHOW -> {
+                    viewModel.setBookmarkTvShow()
+                }
+            }
+        }
     }
 
+    private fun showDetail(movie: Resource<MovieEntity>) {
+        when (movie.status) {
+            Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+            Status.SUCCESS -> if (movie.data != null) {
+                binding.progressBar.visibility = View.GONE
+                binding.nestedScrollView.visibility = View.VISIBLE
+
+                val state = movie.data.bookmarked
+
+                setBookmarkState(state)
+                populateDetail(movie.data)
+            }
+            Status.ERROR -> {
+                binding.progressBar.visibility = View.GONE
+                Toast.makeText(
+                    applicationContext,
+                    "Terjadi kesalahan",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun setBookmarkState(state: Boolean) {
+        if (state) {
+            binding.favoriteButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_favorite
+                )
+            )
+        } else {
+            binding.favoriteButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_favorite_border
+                )
+            )
+        }
+    }
 
     private fun populateDetail(movieEntity: MovieEntity) {
         with(binding) {

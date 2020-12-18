@@ -12,12 +12,26 @@ import com.extcode.project.jetpacksubmission3.data.source.remote.response.TvShow
 import com.extcode.project.jetpacksubmission3.utils.AppExecutors
 import com.extcode.project.jetpacksubmission3.vo.Resource
 
-class FakeMovieAppRepository(
+class MovieAppRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) :
     MovieAppDataSource {
+
+    companion object {
+        @Volatile
+        private var instance: MovieAppRepository? = null
+
+        fun getInstance(
+            remoteData: RemoteDataSource,
+            localData: LocalDataSource,
+            appExecutors: AppExecutors
+        ): MovieAppRepository =
+            instance ?: synchronized(this) {
+                instance ?: MovieAppRepository(remoteData, localData, appExecutors)
+            }
+    }
 
     override fun getAllMovies(): LiveData<Resource<PagedList<MovieEntity>>> {
         return object : NetworkBoundResource<PagedList<MovieEntity>, List<Movie>>(appExecutors) {

@@ -1,6 +1,8 @@
 package com.extcode.project.jetpacksubmission3.data.source.remote
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.extcode.project.jetpacksubmission3.data.source.remote.response.Movie
 import com.extcode.project.jetpacksubmission3.data.source.remote.response.MoviesResponse
 import com.extcode.project.jetpacksubmission3.data.source.remote.response.TvShow
@@ -24,14 +26,18 @@ class RemoteDataSource {
             }
     }
 
-    fun getMovies(callback: LoadMoviesCallback) {
+    fun getMovies(): LiveData<ApiResponse<List<Movie>>> {
         EspressoIdlingResource.increment()
+        val resultMovies = MutableLiveData<ApiResponse<List<Movie>>>()
         ApiConfig.getApiService().getMovies().enqueue(object : Callback<MoviesResponse> {
             override fun onResponse(
                 call: Call<MoviesResponse>,
                 response: Response<MoviesResponse>
             ) {
-                callback.onAllMoviesReceived(response.body()?.results)
+                val results = response.body()?.results
+                if (results != null) {
+                    resultMovies.value = ApiResponse.success(results)
+                }
                 EspressoIdlingResource.decrement()
             }
 
@@ -40,16 +46,21 @@ class RemoteDataSource {
                 EspressoIdlingResource.decrement()
             }
         })
+        return resultMovies
     }
 
-    fun getTvShows(callback: LoadTvShowsCallback) {
+    fun getTvShows(): LiveData<ApiResponse<List<TvShow>>> {
         EspressoIdlingResource.increment()
+        val resultTvShows = MutableLiveData<ApiResponse<List<TvShow>>>()
         ApiConfig.getApiService().getTvShows().enqueue(object : Callback<TvShowsResponse> {
             override fun onResponse(
                 call: Call<TvShowsResponse>,
                 response: Response<TvShowsResponse>
             ) {
-                callback.onAllTvShowsReceived(response.body()?.results)
+                val results = response.body()?.results
+                if (results != null) {
+                    resultTvShows.value = ApiResponse.success(results)
+                }
                 EspressoIdlingResource.decrement()
             }
 
@@ -58,13 +69,7 @@ class RemoteDataSource {
                 EspressoIdlingResource.decrement()
             }
         })
+        return resultTvShows
     }
 
-    interface LoadMoviesCallback {
-        fun onAllMoviesReceived(movieResponses: List<Movie>?)
-    }
-
-    interface LoadTvShowsCallback {
-        fun onAllTvShowsReceived(tvShowResponses: List<TvShow>?)
-    }
 }

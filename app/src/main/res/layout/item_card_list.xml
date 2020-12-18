@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemCard"
     android:layout_width="match_parent"
     android:layout_height="450dp"
     android:layout_marginStart="36dp"
@@ -13,13 +14,6 @@
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="20dp"
     app:cardMaxElevation="4dp">
-
-    <com.skydoves.transformationlayout.TransformationLayout
-        android:id="@+id/transformationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:transformation_duration="550">
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -31,6 +25,7 @@
                 android:contentDescription="@string/poster"
                 android:scaleType="centerCrop"
                 android:src="@drawable/poster_crimes"
+                android:background="@drawable/poster_placeholder"
                 app:riv_corner_radius="20dp" />
 
             <ProgressBar
@@ -76,6 +71,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/title" />
 
                 <TextView
+                    android:id="@+id/language"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/dummyLanguage"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/date"
+                    app:layout_constraintStart_toStartOf="@+id/date"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <TextView
                     android:id="@+id/popularity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -106,7 +112,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
-
-    </com.skydoves.transformationlayout.TransformationLayout>
 
 </androidx.cardview.widget.CardView>
