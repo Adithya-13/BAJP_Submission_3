@@ -122,30 +122,30 @@ class MovieAppRepositoryTest {
     }
 
     @Test
-    fun getBookmarkedMovies() {
+    fun getFavoriteMovies() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllBookmarkedMovies(random)).thenReturn(dataSourceFactory)
-        movieAppRepository.getBookmarkedMovies(random)
+        `when`(local.getAllFavoriteMovies(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getFavoriteMovies(random)
 
-        val bookmarkedMovieEntities =
+        val favoriteMovieEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyMovies()))
-        verify(local).getAllBookmarkedMovies(random)
-        assertNotNull(bookmarkedMovieEntities)
-        assertEquals(movieResponses.size.toLong(), bookmarkedMovieEntities.data?.size?.toLong())
+        verify(local).getAllFavoriteMovies(random)
+        assertNotNull(favoriteMovieEntities)
+        assertEquals(movieResponses.size.toLong(), favoriteMovieEntities.data?.size?.toLong())
     }
 
     @Test
-    fun getBookmarkedTvShows() {
+    fun getFavoriteTvShows() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
-        `when`(local.getAllBookmarkedTvShows(random)).thenReturn(dataSourceFactory)
-        movieAppRepository.getBookmarkedTvShows(random)
+        `when`(local.getAllFavoriteTvShows(random)).thenReturn(dataSourceFactory)
+        movieAppRepository.getFavoriteTvShows(random)
 
-        val bookmarkedTvShowEntities =
+        val favoriteTvShowEntities =
             Resource.success(PagedListUtil.mockPagedList(DataDummy.generateDummyTvShows()))
-        verify(local).getAllBookmarkedTvShows(random)
-        assertNotNull(bookmarkedTvShowEntities)
-        assertEquals(tvShowResponses.size.toLong(), bookmarkedTvShowEntities.data?.size?.toLong())
+        verify(local).getAllFavoriteTvShows(random)
+        assertNotNull(favoriteTvShowEntities)
+        assertEquals(tvShowResponses.size.toLong(), favoriteTvShowEntities.data?.size?.toLong())
     }
 }

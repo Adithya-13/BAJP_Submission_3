@@ -12,7 +12,7 @@ object SortUtils {
         val simpleQuery = StringBuilder().append("SELECT * FROM movieEntities where isTvShow = 0 ")
         when (filter) {
             POPULARITY -> {
-                simpleQuery.append("ORDER BY popularity DESC")
+                simpleQuery.append("ORDER BY popularity ASC")
             }
             NEWEST -> {
                 simpleQuery.append("ORDER BY releaseDate DESC")
@@ -28,7 +28,7 @@ object SortUtils {
         val simpleQuery = StringBuilder().append("SELECT * FROM movieEntities where isTvShow = 1 ")
         when (filter) {
             POPULARITY -> {
-                simpleQuery.append("ORDER BY popularity DESC")
+                simpleQuery.append("ORDER BY popularity ASC")
             }
             NEWEST -> {
                 simpleQuery.append("ORDER BY releaseDate DESC")
@@ -40,12 +40,12 @@ object SortUtils {
         return SimpleSQLiteQuery(simpleQuery.toString())
     }
 
-    fun getSortedQueryBookmarkedMovies(filter: String): SimpleSQLiteQuery {
+    fun getSortedQueryFavoriteMovies(filter: String): SimpleSQLiteQuery {
         val simpleQuery =
-            StringBuilder().append("SELECT * FROM movieEntities where bookmarked = 1 and isTvShow = 0 ")
+            StringBuilder().append("SELECT * FROM movieEntities where favorite = 1 and isTvShow = 0 ")
         when (filter) {
             POPULARITY -> {
-                simpleQuery.append("ORDER BY popularity DESC")
+                simpleQuery.append("ORDER BY popularity ASC")
             }
             NEWEST -> {
                 simpleQuery.append("ORDER BY releaseDate DESC")
@@ -57,12 +57,12 @@ object SortUtils {
         return SimpleSQLiteQuery(simpleQuery.toString())
     }
 
-    fun getSortedQueryBookmarkedTvShows(filter: String): SimpleSQLiteQuery {
+    fun getSortedQueryFavoriteTvShows(filter: String): SimpleSQLiteQuery {
         val simpleQuery =
-            StringBuilder().append("SELECT * FROM movieEntities where bookmarked = 1 and isTvShow = 1 ")
+            StringBuilder().append("SELECT * FROM movieEntities where Favorite = 1 and isTvShow = 1 ")
         when (filter) {
             POPULARITY -> {
-                simpleQuery.append("ORDER BY popularity DESC")
+                simpleQuery.append("ORDER BY popularity ASC")
             }
             NEWEST -> {
                 simpleQuery.append("ORDER BY releaseDate DESC")

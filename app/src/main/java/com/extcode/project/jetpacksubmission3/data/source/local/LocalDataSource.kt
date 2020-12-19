@@ -28,20 +28,20 @@ class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
     fun getMovie(movieId: Int): LiveData<MovieEntity> = mMovieDao.getMovie(movieId)
     fun getTvShow(tvShowId: Int): LiveData<MovieEntity> = mMovieDao.getTvShow(tvShowId)
 
-    fun getAllBookmarkedMovies(sort: String): DataSource.Factory<Int, MovieEntity> {
-        val query = SortUtils.getSortedQueryBookmarkedMovies(sort)
-        return mMovieDao.getBookmarkedMovies(query)
+    fun getAllFavoriteMovies(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryFavoriteMovies(sort)
+        return mMovieDao.getFavoriteMovies(query)
     }
 
-    fun getAllBookmarkedTvShows(sort: String): DataSource.Factory<Int, MovieEntity> {
-        val query = SortUtils.getSortedQueryBookmarkedTvShows(sort)
-        return mMovieDao.getBookmarkedTvShows(query)
+    fun getAllFavoriteTvShows(sort: String): DataSource.Factory<Int, MovieEntity> {
+        val query = SortUtils.getSortedQueryFavoriteTvShows(sort)
+        return mMovieDao.getFavoriteTvShows(query)
     }
 
     fun insertMovies(movies: List<MovieEntity>) = mMovieDao.insertMovie(movies)
     fun updateMovie(movie: MovieEntity) = mMovieDao.updateMovie(movie)
-    fun setMovieBookmark(movie: MovieEntity, newState: Boolean) {
-        movie.bookmarked = newState
+    fun setMovieFavorite(movie: MovieEntity, newState: Boolean) {
+        movie.favorite = newState
         mMovieDao.updateMovie(movie)
     }
 }

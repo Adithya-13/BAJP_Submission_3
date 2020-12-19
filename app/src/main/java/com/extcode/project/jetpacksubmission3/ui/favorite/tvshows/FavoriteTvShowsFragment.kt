@@ -39,7 +39,7 @@ class FavoriteTvShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        itemTouchHelper.attachToRecyclerView(binding.rvBookmarkTvShows)
+        itemTouchHelper.attachToRecyclerView(binding.rvFavoriteTvShows)
 
         val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
@@ -50,7 +50,7 @@ class FavoriteTvShowsFragment : Fragment() {
         binding.notFound.visibility = View.GONE
         setList(SortUtils.RANDOM)
 
-        with(binding.rvBookmarkTvShows) {
+        with(binding.rvFavoriteTvShows) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = tvShowsAdapter
@@ -60,7 +60,6 @@ class FavoriteTvShowsFragment : Fragment() {
         binding.newest.setOnClickListener { setList(SortUtils.NEWEST) }
         binding.popularity.setOnClickListener { setList(SortUtils.POPULARITY) }
     }
-
 
     private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
         override fun getMovementFlags(
@@ -82,11 +81,11 @@ class FavoriteTvShowsFragment : Fragment() {
             if (view != null) {
                 val swipedPosition = viewHolder.adapterPosition
                 val tvShowEntity = tvShowsAdapter.getSwipedData(swipedPosition)
-                tvShowEntity?.let { viewModel.setBookmark(it) }
+                tvShowEntity?.let { viewModel.setFavorite(it) }
                 val snackbar =
                     Snackbar.make(view as View, R.string.message_undo, Snackbar.LENGTH_LONG)
                 snackbar.setAction(R.string.message_ok) { _ ->
-                    tvShowEntity?.let { viewModel.setBookmark(it) }
+                    tvShowEntity?.let { viewModel.setFavorite(it) }
                 }
                 snackbar.show()
             }
@@ -94,7 +93,7 @@ class FavoriteTvShowsFragment : Fragment() {
     })
 
     private fun setList(sort: String) {
-        viewModel.getBookmarkedTvShows(sort).observe(this, tvShowsObserver)
+        viewModel.getFavoriteTvShows(sort).observe(this, tvShowsObserver)
     }
 
     private val tvShowsObserver = Observer<PagedList<MovieEntity>> { tvShows ->

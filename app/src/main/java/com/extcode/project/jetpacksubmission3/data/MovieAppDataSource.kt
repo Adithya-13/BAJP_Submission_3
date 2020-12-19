@@ -15,10 +15,10 @@ interface MovieAppDataSource {
 
     fun getTvShowById(tvShowId: Int): LiveData<Resource<MovieEntity>>
 
-    fun getBookmarkedMovies(sort: String): LiveData<PagedList<MovieEntity>>
+    fun getFavoriteMovies(sort: String): LiveData<PagedList<MovieEntity>>
 
-    fun getBookmarkedTvShows(sort: String): LiveData<PagedList<MovieEntity>>
+    fun getFavoriteTvShows(sort: String): LiveData<PagedList<MovieEntity>>
 
-    fun setCourseBookmark(movie: MovieEntity, state: Boolean)
+    fun setCourseFavorite(movie: MovieEntity, state: Boolean)
 
 }

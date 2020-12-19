@@ -97,7 +97,7 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadBookmarkMovies() {
+    fun loadFavoriteMovies() {
         onView(withId(R.id.rvMovies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -107,8 +107,8 @@ class HomeActivityTest {
         onView(withId(R.id.favoriteButton)).perform(click())
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.btFavorite)).perform(click())
-        onView(withId(R.id.rvBookmarkMovies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rvBookmarkMovies)).perform(
+        onView(withId(R.id.rv_favorite_movies)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_favorite_tv_shows)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
@@ -128,7 +128,7 @@ class HomeActivityTest {
     }
 
     @Test
-    fun loadBookmarkTvShows() {
+    fun loadFavoriteTvShows() {
         onView(withId(R.id.btTvShows)).perform(click())
         onView(withId(R.id.rvTvShows)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -140,8 +140,8 @@ class HomeActivityTest {
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.btFavorite)).perform(click())
         onView(withId(R.id.tab)).perform(selectTabAtPosition(1))
-        onView(withId(R.id.rvBookmarkTvShows)).check(matches(isDisplayed()))
-        onView(withId(R.id.rvBookmarkTvShows)).perform(
+        onView(withId(R.id.rv_favorite_tv_shows)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_favorite_tv_shows)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 clickChildViewWithId(R.id.itemCard)

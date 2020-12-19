@@ -37,8 +37,8 @@ data class MovieEntity(
     @ColumnInfo(name = "posterPath")
     var posterPath: String,
 
-    @ColumnInfo(name = "bookmarked")
-    var bookmarked: Boolean = false,
+    @ColumnInfo(name = "favorite")
+    var favorite: Boolean = false,
 
     @ColumnInfo(name = "isTvShow")
     var isTvShows: Boolean = false

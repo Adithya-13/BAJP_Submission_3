@@ -64,10 +64,10 @@ class DetailActivity : AppCompatActivity() {
         binding.favoriteButton.setOnClickListener {
             when (enumType) {
                 DetailType.MOVIE -> {
-                    viewModel.setBookmarkMovie()
+                    viewModel.setFavoriteMovie()
                 }
                 DetailType.TV_SHOW -> {
-                    viewModel.setBookmarkTvShow()
+                    viewModel.setFavoriteTvShow()
                 }
             }
         }
@@ -80,9 +80,9 @@ class DetailActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
                 binding.nestedScrollView.visibility = View.VISIBLE
 
-                val state = movie.data.bookmarked
+                val state = movie.data.favorite
 
-                setBookmarkState(state)
+                setFavoriteState(state)
                 populateDetail(movie.data)
             }
             Status.ERROR -> {
@@ -96,7 +96,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBookmarkState(state: Boolean) {
+    private fun setFavoriteState(state: Boolean) {
         if (state) {
             binding.favoriteButton.setImageDrawable(
                 ContextCompat.getDrawable(

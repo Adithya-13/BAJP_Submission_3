@@ -8,15 +8,15 @@ import com.extcode.project.jetpacksubmission3.data.source.local.enitity.MovieEnt
 
 class FavoriteViewModel(private val movieAppRepository: MovieAppRepository) : ViewModel() {
 
-    fun getBookmarkedMovies(sort: String): LiveData<PagedList<MovieEntity>> =
-        movieAppRepository.getBookmarkedMovies(sort)
+    fun getFavoriteMovies(sort: String): LiveData<PagedList<MovieEntity>> =
+        movieAppRepository.getFavoriteMovies(sort)
 
-    fun getBookmarkedTvShows(sort: String): LiveData<PagedList<MovieEntity>> =
-        movieAppRepository.getBookmarkedTvShows(sort)
+    fun getFavoriteTvShows(sort: String): LiveData<PagedList<MovieEntity>> =
+        movieAppRepository.getFavoriteTvShows(sort)
 
-    fun setBookmark(movieEntity: MovieEntity) {
-        val newState = !movieEntity.bookmarked
-        movieAppRepository.setCourseBookmark(movieEntity, newState)
+    fun setFavorite(movieEntity: MovieEntity) {
+        val newState = !movieEntity.favorite
+        movieAppRepository.setCourseFavorite(movieEntity, newState)
     }
 }
 

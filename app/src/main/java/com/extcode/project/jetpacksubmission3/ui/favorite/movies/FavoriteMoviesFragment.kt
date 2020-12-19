@@ -39,7 +39,7 @@ class FavoriteMoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        itemTouchHelper.attachToRecyclerView(binding.rvBookmarkMovies)
+        itemTouchHelper.attachToRecyclerView(binding.rvFavoriteMovies)
 
         val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
@@ -50,7 +50,7 @@ class FavoriteMoviesFragment : Fragment() {
         binding.notFound.visibility = View.GONE
         setList(SortUtils.RANDOM)
 
-        with(binding.rvBookmarkMovies) {
+        with(binding.rvFavoriteMovies) {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             this.adapter = moviesAdapter
@@ -81,11 +81,11 @@ class FavoriteMoviesFragment : Fragment() {
             if (view != null) {
                 val swipedPosition = viewHolder.adapterPosition
                 val movieEntity = moviesAdapter.getSwipedData(swipedPosition)
-                movieEntity?.let { viewModel.setBookmark(it) }
+                movieEntity?.let { viewModel.setFavorite(it) }
                 val snackbar =
                     Snackbar.make(view as View, R.string.message_undo, Snackbar.LENGTH_LONG)
                 snackbar.setAction(R.string.message_ok) { _ ->
-                    movieEntity?.let { viewModel.setBookmark(it) }
+                    movieEntity?.let { viewModel.setFavorite(it) }
                 }
                 snackbar.show()
             }
@@ -93,7 +93,7 @@ class FavoriteMoviesFragment : Fragment() {
     })
 
     private fun setList(sort: String) {
-        viewModel.getBookmarkedMovies(sort).observe(this, moviesObserver)
+        viewModel.getFavoriteMovies(sort).observe(this, moviesObserver)
     }
 
     private val moviesObserver = Observer<PagedList<MovieEntity>> { movies ->

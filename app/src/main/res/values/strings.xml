@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Movie App</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="dummyTitle">The Crimes Of Grindelwald</string>
     <string name="dummyDate">23 august 2020</string>
     <string name="dummyUserScore">75%</string>

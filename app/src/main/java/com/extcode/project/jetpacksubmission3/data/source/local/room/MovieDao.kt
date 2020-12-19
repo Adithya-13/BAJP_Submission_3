@@ -24,10 +24,10 @@ interface MovieDao {
     fun getTvShow(tvShowId: Int): LiveData<MovieEntity>
 
     @RawQuery(observedEntities = [MovieEntity::class])
-    fun getBookmarkedMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
+    fun getFavoriteMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
     @RawQuery(observedEntities = [MovieEntity::class])
-    fun getBookmarkedTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
+    fun getFavoriteTvShows(query: SupportSQLiteQuery): DataSource.Factory<Int, MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovie(movies: List<MovieEntity>)

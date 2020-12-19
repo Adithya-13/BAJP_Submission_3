@@ -41,36 +41,36 @@ class FavoriteViewModelTest {
     }
 
     @Test
-    fun getBookmarkedMovies() {
+    fun getFavoriteMovies() {
         val dummyMovies = pagedList
         `when`(dummyMovies.size).thenReturn(5)
         val movies = MutableLiveData<PagedList<MovieEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieAppRepository.getBookmarkedMovies(sort)).thenReturn(movies)
-        val movieEntities = viewModel.getBookmarkedMovies(sort).value
-        verify(movieAppRepository).getBookmarkedMovies(sort)
+        `when`(movieAppRepository.getFavoriteMovies(sort)).thenReturn(movies)
+        val movieEntities = viewModel.getFavoriteMovies(sort).value
+        verify(movieAppRepository).getFavoriteMovies(sort)
         assertNotNull(movieEntities)
         assertEquals(5, movieEntities?.size)
 
-        viewModel.getBookmarkedMovies(sort).observeForever(observer)
+        viewModel.getFavoriteMovies(sort).observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
 
     @Test
-    fun getBookmarkedTvShows() {
+    fun getFavoriteTvShows() {
         val dummyTvShows = pagedList
         `when`(dummyTvShows.size).thenReturn(5)
         val tvShows = MutableLiveData<PagedList<MovieEntity>>()
         tvShows.value = dummyTvShows
 
-        `when`(movieAppRepository.getBookmarkedTvShows(sort)).thenReturn(tvShows)
-        val tvShowEntities = viewModel.getBookmarkedTvShows(sort).value
-        verify(movieAppRepository).getBookmarkedTvShows(sort)
+        `when`(movieAppRepository.getFavoriteTvShows(sort)).thenReturn(tvShows)
+        val tvShowEntities = viewModel.getFavoriteTvShows(sort).value
+        verify(movieAppRepository).getFavoriteTvShows(sort)
         assertNotNull(tvShowEntities)
         assertEquals(5, tvShowEntities?.size)
 
-        viewModel.getBookmarkedTvShows(sort).observeForever(observer)
+        viewModel.getFavoriteTvShows(sort).observeForever(observer)
         verify(observer).onChanged(dummyTvShows)
     }
 

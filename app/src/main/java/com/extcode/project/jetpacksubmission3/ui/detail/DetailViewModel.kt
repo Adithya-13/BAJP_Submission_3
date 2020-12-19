@@ -31,19 +31,19 @@ class DetailViewModel(private val movieAppRepository: MovieAppRepository) : View
             movieAppRepository.getTvShowById(mTvShowId)
         }
 
-    fun setBookmarkMovie() {
+    fun setFavoriteMovie() {
         val movieResource = movieDetail.value?.data
         if (movieResource != null) {
-            val newState = !movieResource.bookmarked
-            movieAppRepository.setCourseBookmark(movieResource, newState)
+            val newState = !movieResource.favorite
+            movieAppRepository.setCourseFavorite(movieResource, newState)
         }
     }
 
-    fun setBookmarkTvShow() {
+    fun setFavoriteTvShow() {
         val tvShowResource = tvShowDetail.value?.data
         if (tvShowResource != null) {
-            val newState = !tvShowResource.bookmarked
-            movieAppRepository.setCourseBookmark(tvShowResource, newState)
+            val newState = !tvShowResource.favorite
+            movieAppRepository.setCourseFavorite(tvShowResource, newState)
         }
     }
 
