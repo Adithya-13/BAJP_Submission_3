@@ -59,6 +59,7 @@ class FavoriteTvShowsFragment : Fragment() {
         binding.random.setOnClickListener { setList(SortUtils.RANDOM) }
         binding.newest.setOnClickListener { setList(SortUtils.NEWEST) }
         binding.popularity.setOnClickListener { setList(SortUtils.POPULARITY) }
+        binding.vote.setOnClickListener { setList(SortUtils.VOTE) }
     }
 
     private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {

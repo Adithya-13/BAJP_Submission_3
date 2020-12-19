@@ -50,14 +50,25 @@
         fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/random"
+            android:id="@+id/popularity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/primaryColor"
             fab:fab_colorRipple="@color/primaryColor"
-            android:src="@drawable/ic_default"
-            fab:fab_label="Random"
+            android:src="@drawable/ic_star"
+            fab:fab_label="Popularity"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/vote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/primaryColor"
+            fab:fab_colorRipple="@color/primaryColor"
+            android:src="@drawable/ic_star"
+            fab:fab_label="Vote"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
@@ -72,14 +83,14 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/popularity"
+            android:id="@+id/random"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/primaryColor"
             fab:fab_colorRipple="@color/primaryColor"
-            android:src="@drawable/ic_star"
-            fab:fab_label="Popularity"
+            android:src="@drawable/ic_default"
+            fab:fab_label="Random"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
