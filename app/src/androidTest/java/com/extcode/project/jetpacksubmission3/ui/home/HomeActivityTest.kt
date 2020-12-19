@@ -61,6 +61,7 @@ class HomeActivityTest {
 
     @Test
     fun loadDetailMovies() {
+        onView(withId(R.id.rvMovies)).check(matches(isDisplayed()))
         onView(withId(R.id.rvMovies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
@@ -108,7 +109,7 @@ class HomeActivityTest {
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.btFavorite)).perform(click())
         onView(withId(R.id.rv_favorite_movies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_favorite_tv_shows)).perform(
+        onView(withId(R.id.rv_favorite_movies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 0,
                 click()
